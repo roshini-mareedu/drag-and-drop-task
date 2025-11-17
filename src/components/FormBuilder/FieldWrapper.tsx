@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import FieldRenderer from './FieldRenderer'
-import { Trash2 } from 'lucide-react'
+import { X } from 'lucide-react'
 
 const FieldWrapper = ({ field, onDelete }: any) => {
   const [hover, setHover] = useState(false)
@@ -17,7 +17,7 @@ const FieldWrapper = ({ field, onDelete }: any) => {
           onClick={onDelete}
           className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full shadow hover:bg-red-600"
         >
-          <Trash2 size={14} />
+          <X size={14} />
         </button>
       )}
 

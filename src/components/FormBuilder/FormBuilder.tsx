@@ -2,7 +2,6 @@ import { DndContext } from '@dnd-kit/core'
 import { useState } from 'react'
 import DraggableItem from './DraggableItem'
 import Canvas from './Canvas'
-import { arrayMove } from "@dnd-kit/sortable";
 
 
 const FormBuilder = ({ fields }: any) => {
