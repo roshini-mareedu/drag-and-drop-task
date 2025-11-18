@@ -1,5 +1,4 @@
 import React from "react";
-
 import TextField from "../fields/TextField";
 import SignatureField from "../fields/SignatureField";
 import InitialField from "../fields/InitialField";
@@ -30,49 +29,47 @@ import TimeField from "../fields/TimeField";
 import MyInitialField from "../fields/MyInitialField";
 import MySignatureField from "../fields/MySignatureField";
 
-
-
 export type FieldType =
-   "text"
-   "number"
-   "signature"
-   "initial"
-   "heading"
-   "paragraph"
-   "checkbox"
-   "company_name"
-   "currency"
-   "date"
-   "date_range"
-   "date_time_range"
-   "dropdown"
-   "email"
-   "file"
-   "fixed_time"
-   "full_name"
-   "horizontal"
-   "list"
-   "multiple"
-   "multiline"
-   "radio"
-   "stamp"
-   "time_range"
-   "title"
-   "weekdays"
-   "time"
-   "my_initial"
-   "my_signature";
+  | "text"
+  | "number"
+  | "signature"
+  | "initial"
+  | "heading"
+  | "paragraph"
+  | "checkbox"
+  | "company_name"
+  | "currency"
+  | "date"
+  | "date_range"
+  | "date_time_range"
+  | "dropdown"
+  | "email"
+  | "file"
+  | "fixed_time"
+  | "full_name"
+  | "horizontal"
+  | "list"
+  | "multiple"
+  | "multiline"
+  | "radio"
+  | "stamp"
+  | "time_range"
+  | "title"
+  | "weekdays"
+  | "time"
+  | "my_initial"
+  | "my_signature";
 
 export interface Field {
   fieldId: string;
-  fieldType: FieldType;
+  fieldType: FieldType | string;
   fieldName?: string;
   fieldUniqueKey?: string;
-  properties?: Record<string, any>;
+  properties: Record<string, any>;
   [key: string]: any;
 }
 
-const map: Record<FieldType, React.FC<{ field: Field }>> = {
+const map: Record<string, React.FC<{ field: Field }>> = {
   text: TextField,
   number: NumberField,
   signature: SignatureField,
@@ -110,7 +107,7 @@ const FieldRenderer = ({ field }: { field: Field }) => {
   if (!Component) {
     return (
       <div className="text-red-500 font-semibold">
-         UNKNOWN FIELD TYPE: {field.fieldType}
+        UNKNOWN FIELD TYPE: {field.fieldType}
       </div>
     );
   }

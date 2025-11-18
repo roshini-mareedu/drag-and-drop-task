@@ -1,29 +1,50 @@
-import { useState } from 'react'
-import FieldRenderer from './FieldRenderer'
-import { X } from 'lucide-react'
+import { useState } from "react";
+import { X } from "lucide-react";
+import FieldRenderer, { Field } from "./FieldRenderer";
+import type { CanvasField } from "./FormBuilder";
 
-const FieldWrapper = ({ field, onDelete }: any) => {
-  const [hover, setHover] = useState(false)
+interface FieldWrapperProps {
+  field: CanvasField;
+  onDelete: () => void;
+  onSelect: () => void;
+  isSelected: boolean;
+}
+
+const FieldWrapper = ({
+  field,
+  onDelete,
+  onSelect,
+  isSelected,
+}: FieldWrapperProps) => {
+  const [hover, setHover] = useState(false);
 
   return (
     <div
-      className={`relative p-3 rounded-lg bg-white shadow-sm border transition 
-                  ${hover ? 'border-gray-800 shadow-md' : 'border-gray-300'}`}
+      className={`
+        relative p-3 rounded-lg bg-white shadow-sm border transition
+        ${hover ? "shadow-md" : ""}
+        ${isSelected ? "border-blue-500" : "border-gray-300"}
+      `}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      onClick={onSelect}
     >
-      {hover && (
+      {(hover || isSelected) && (
         <button
-          onClick={onDelete}
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation(); // don't select when deleting
+            onDelete();
+          }}
           className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full shadow hover:bg-red-600"
         >
           <X size={14} />
         </button>
       )}
 
-      <FieldRenderer field={field} />
+      <FieldRenderer field={field as unknown as Field} />
     </div>
-  )
-}
+  );
+};
 
-export default FieldWrapper
+export default FieldWrapper;

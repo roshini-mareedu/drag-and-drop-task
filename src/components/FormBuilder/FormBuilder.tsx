@@ -1,54 +1,92 @@
-import { DndContext } from '@dnd-kit/core'
-import { useState } from 'react'
-import DraggableItem from './DraggableItem'
-import Canvas from './Canvas'
+import { useState } from "react";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import DraggableItem from "./DraggableItem";
+import Canvas from "./Canvas";
+import type { Field } from "./FieldRenderer"; // or from "./types"
+import FieldSettingsPanel from "./FieldSettingsPanel";
 
-
-const FormBuilder = ({ fields }: any) => {
-
-  interface CanvasField {
-  fieldId: string
-  fieldType: string
-  properties: any
-  canvasId: string
+export interface CanvasField extends Field {
+  canvasId: string;
 }
 
-const [canvasFields, setCanvasFields] = useState<CanvasField[]>([])
+interface FormBuilderProps {
+  fields: Field[]; // palette fields from your JSON
+}
 
-  const handleDragEnd = (event: any) => {
-    if (event.over?.id === 'canvas-dropzone') {
-      const field = event.active.data.current.field
+const FormBuilder = ({ fields }: FormBuilderProps) => {
+  const [canvasFields, setCanvasFields] = useState<CanvasField[]>([]);
+  const [selectedCanvasId, setSelectedCanvasId] = useState<string | null>(null);
 
-      const newField = {
+  const handleDragEnd = (event: DragEndEvent) => {
+    if (event.over?.id === "canvas-dropzone") {
+      const field = (event.active.data.current as { field: Field }).field;
+
+      const newField: CanvasField = {
         ...field,
         canvasId: crypto.randomUUID(),
-      }
+      };
 
-      setCanvasFields((prev) => [...prev, newField])
+      setCanvasFields((prev) => [...prev, newField]);
+      setSelectedCanvasId(newField.canvasId); // auto-select newly dropped
     }
-  }
- 
-  const handleDelete = (id: any) => {
-    setCanvasFields((prev) => prev.filter((f) => f.canvasId !== id))
-  }
+  };
+
+  const handleDelete = (canvasId: string) => {
+    setCanvasFields((prev) => prev.filter((f) => f.canvasId !== canvasId));
+    setSelectedCanvasId((prev) => (prev === canvasId ? null : prev));
+  };
+
+  const handleSelectField = (canvasId: string) => {
+    setSelectedCanvasId(canvasId);
+  };
+
+  const handleUpdateField = (updated: CanvasField) => {
+    setCanvasFields((prev) =>
+      prev.map((f) => (f.canvasId === updated.canvasId ? updated : f))
+    );
+  };
+
+  const selectedField =
+    selectedCanvasId &&
+    canvasFields.find((f) => f.canvasId === selectedCanvasId) ||
+    null;
 
   return (
     <DndContext onDragEnd={handleDragEnd}>
-      <div className="flex gap-6 p-6">
-        <div className="w-1/3 bg-gray-300 p-4 rounded-xl shadow-sm">
-          <h2 className="font-bold text-xl mb-4">Fields</h2>
+      <div className="flex gap-4 p-6">
+
+        {/* LEFT: Field palette */}
+        <div className="w-1/4 bg-gray-100 p-4 rounded-xl shadow-sm">
+          <h2 className="font-bold text-lg mb-3">Fields</h2>
           <div className="grid grid-cols-2 gap-3">
-            {fields.map((field: any) => (
+            {fields.map((field) => (
               <DraggableItem key={field.fieldId} field={field} />
             ))}
           </div>
         </div>
-        <div className="w-2/3">
-          <Canvas droppedFields={canvasFields} onDelete={handleDelete} />
+
+        {/* MIDDLE: Canvas */}
+        <div className="flex-1">
+          <Canvas
+            droppedFields={canvasFields}
+            onDelete={handleDelete}
+            onSelectField={handleSelectField}
+            selectedCanvasId={selectedCanvasId}
+          />
+        </div>
+
+        {/* RIGHT: Settings */}
+        <div className="w-1/4 bg-white border border-gray-200 rounded-xl shadow-sm">
+          <FieldSettingsPanel
+            selectedField={selectedField}
+            allFields={canvasFields}
+            onUpdateField={handleUpdateField}
+            onSelectFieldById={handleSelectField}
+          />
         </div>
       </div>
     </DndContext>
-  )
-}
+  );
+};
 
-export default FormBuilder
+export default FormBuilder;
