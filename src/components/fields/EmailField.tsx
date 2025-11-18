@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-const EmailField = ({ field } : any) => {
+interface Field{
+  fieldId: string;
+  fieldType: string;
+  properties: any;
+}
+
+const EmailField = ({ field } : {field:Field}) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
 
@@ -10,7 +16,6 @@ const EmailField = ({ field } : any) => {
   return (
     <div className="flex flex-col w-full">
 
-      {/* Dynamic Label */}
       {labelProps?.showFieldLabel && (
         <Label
           className="mb-1"
@@ -26,7 +31,6 @@ const EmailField = ({ field } : any) => {
         </Label>
       )}
 
-      {/* Email Input */}
       <Input
         type="email"
         placeholder={props.placeholder}

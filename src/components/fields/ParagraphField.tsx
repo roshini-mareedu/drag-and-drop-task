@@ -1,5 +1,9 @@
-
-const ParagraphField = ({ field } : any) => {
+interface Field{
+  fieldId: string;
+  fieldType: string;
+  properties: any;
+}
+const ParagraphField = ({ field } : {field:Field}) => {
   const props = field.properties;
 
   const paragraphText = props.value || props.placeholder || "Paragraph text";

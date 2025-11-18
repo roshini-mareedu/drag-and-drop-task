@@ -2,7 +2,12 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const MyInitialField = ({ field }: any) => {
+interface Field{
+  fieldId: string;
+  fieldType: string;
+  properties: any;
+}
+const MyInitialField = ({ field }: {field:Field}) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
 
@@ -11,7 +16,6 @@ const MyInitialField = ({ field }: any) => {
   return (
     <div className="flex flex-col w-full gap-2">
 
-      {/* Dynamic Label */}
       {labelProps?.showFieldLabel && (
         <Label
           className="font-medium"

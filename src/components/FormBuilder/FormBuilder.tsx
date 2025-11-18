@@ -5,7 +5,15 @@ import Canvas from './Canvas'
 
 
 const FormBuilder = ({ fields }: any) => {
-  const [canvasFields, setCanvasFields] = useState([])
+
+  interface CanvasField {
+  fieldId: string
+  fieldType: string
+  properties: any
+  canvasId: string
+}
+
+const [canvasFields, setCanvasFields] = useState<CanvasField[]>([])
 
   const handleDragEnd = (event: any) => {
     if (event.over?.id === 'canvas-dropzone') {

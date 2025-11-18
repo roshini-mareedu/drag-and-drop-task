@@ -1,76 +1,13 @@
-// import React, { useState } from "react";
-
-// const StampField = ({ field }) => {
-//   const props = field.properties;
-//   const labelProps = props.fieldLabelProperties;
-
-//   // Holds uploaded stamp image (base64)
-//   const [stamp, setStamp] = useState(props.value || "");
-
-//   const handleStampUpload = (e) => {
-//     const file = e.target.files[0];
-//     if (!file) return;
-
-//     const reader = new FileReader();
-//     reader.onload = () => setStamp(reader.result);
-//     reader.readAsDataURL(file);
-//   };
-
-//   return (
-//     <div className="flex flex-col w-full">
-
-//       {/* Dynamic Label */}
-//       {labelProps?.showFieldLabel && (
-//         <label
-//           className="mb-1"
-//           style={{
-//             color: labelProps.color,
-//             fontSize: labelProps.fontsize,
-//             fontFamily: labelProps.fontFamily,
-//             textAlign: labelProps.textAlign,
-//           }}
-//         >
-//           {labelProps.fieldLabel}
-//           {props.required && <span className="text-red-500 ml-1">*</span>}
-//         </label>
-//       )}
-
-//       {/* Stamp Box */}
-//       <div
-//         className="border border-gray-400 border-dashed rounded p-2 flex justify-center items-center bg-gray-50"
-//         style={{ height: "120px" }}
-//       >
-//         {stamp ? (
-//           <img
-//             src={stamp}
-//             alt="Stamp"
-//             className="h-full object-contain"
-//           />
-//         ) : (
-//           <span className="text-gray-500">{props.placeholder || "Stamp"}</span>
-//         )}
-//       </div>
-
-//       {/* File input for uploading stamp */}
-//       <input
-//         type="file"
-//         accept="image/*"
-//         required={props.required}
-//         onChange={handleStampUpload}
-//         className="mt-2 text-sm"
-//       />
-//     </div>
-//   );
-// };
-
-// export default StampField;
-
-
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const StampField = ({ field }: any) => {
+interface Field{
+  fieldId: string;
+  fieldType: string;
+  properties: any;
+}
+const StampField = ({ field }: {field:Field}) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
   const [stamp, setStamp] = useState(props.value || "");

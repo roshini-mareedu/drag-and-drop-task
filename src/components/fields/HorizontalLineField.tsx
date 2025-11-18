@@ -1,6 +1,9 @@
-import React from "react";
-
-const HorizontalLineField = ({ field }) => {
+interface Field{
+  fieldId: string;
+  fieldType: string;
+  properties: any;
+}
+const HorizontalLineField = ({ field } : {field:Field}) => {
   const props = field.properties;
 
   return (

@@ -1,90 +1,13 @@
-// import React, { useState } from "react";
-
-// const CurrencyField = ({ field }) => {
-//   const props = field.properties;
-//   const labelProps = props.fieldLabelProperties;
-
-//   const [value, setValue] = useState(props.value || "");
-
-//   // Format number with thousand separators
-//   const formatNumber = (num) => {
-//     if (!num) return "";
-//     const parts = num.split(".");
-//     const whole = parts[0].replace(/,/g, "");
-//     const fraction = parts[1];
-
-//     let formatted = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-//     return fraction !== undefined ? `${formatted}.${fraction}` : formatted;
-//   };
-
-//   // On input change
-//   const handleChange = (e) => {
-//     let val = e.target.value.replace(/[^0-9.]/g, ""); // Only digits + decimal
-
-//     // Allow only one decimal point
-//     const parts = val.split(".");
-//     if (parts.length > 2) return;
-
-//     // Apply thousand separators if enabled
-//     if (props.useThousandsSeparator) {
-//       val = formatNumber(val);
-//     }
-
-//     setValue(val);
-//   };
-
-//   return (
-//     <div className="flex flex-col w-full">
-
-//       {/* Dynamic Label */}
-//       {labelProps?.showFieldLabel && (
-//         <label
-//           className="mb-1"
-//           style={{
-//             color: labelProps.color,
-//             fontSize: labelProps.fontsize,
-//             fontFamily: labelProps.fontFamily,
-//             textAlign: labelProps.textAlign,
-//           }}
-//         >
-//           {labelProps.fieldLabel}
-//           {props.required && <span className="text-red-500 ml-1">*</span>}
-//         </label>
-//       )}
-
-//       {/* Currency Field */}
-//       <div className="flex items-center border border-gray-300 rounded px-2 py-1">
-//         <span className="mr-2">{props.currencySymbol}</span>
-
-//         <input
-//           type="text"
-//           placeholder={props.placeholder}
-//           required={props.required}
-//           value={value}
-//           onChange={handleChange}
-//           style={{
-//             color: props.color,
-//             fontSize: props.fontsize,
-//             fontFamily: labelProps.fontFamily,
-//             fontWeight: props.fontWeight,
-//             fontStyle: props.fontStyle,
-//           }}
-//           className="flex-1 outline-none"
-//         />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default CurrencyField;
-
-
 import  { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "../ui/label";
 
-const CurrencyField = ({ field }: any) => {
+interface Field{
+  fieldId: string;
+  fieldType: string;
+  properties: any;
+}
+const CurrencyField = ({ field }: { field : Field }) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
   const [value, setValue] = useState(props.value || "");
@@ -116,7 +39,6 @@ const CurrencyField = ({ field }: any) => {
   return (
     <div className="flex flex-col gap-1 w-full">
 
-      {/* Dynamic Label */}
       {labelProps?.showFieldLabel && (
         <Label
           className="text-sm font-medium"
@@ -132,7 +54,6 @@ const CurrencyField = ({ field }: any) => {
         </Label>
       )}
 
-      {/* Currency field */}
       <div className="flex items-center border rounded-md bg-white border-gray-300 px-2 py-1 focus-within:ring-2 focus-within:ring-blue-500">
 
         <span className="text-gray-500 mr-2">{props.currencySymbol || "$"}</span>

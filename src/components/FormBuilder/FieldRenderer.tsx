@@ -1,3 +1,5 @@
+import React from "react";
+
 import TextField from "../fields/TextField";
 import SignatureField from "../fields/SignatureField";
 import InitialField from "../fields/InitialField";
@@ -28,41 +30,90 @@ import TimeField from "../fields/TimeField";
 import MyInitialField from "../fields/MyInitialField";
 import MySignatureField from "../fields/MySignatureField";
 
-const FieldRenderer = ({ field } : any) => {
-  const map = {
-    text: TextField,
-    number: NumberField,
-    signature: SignatureField,
-    initial: InitialField,
-    heading: HeadingField,
-    paragraph: ParagraphField,
-    checkbox: CheckboxField,
-    company_name: CompanyNameField,
-    currency: CurrencyField,
-    date: DateField,
-    date_range: DateRangeField,
-    date_time_range: DateTimeRangeField,
-    dropdown: DropdownField,
-    email: EmailField,
-    file: FileField,
-    fixed_time: FixedTimeField,
-    full_name: FullNameField,
-    horizontal: HorizontalLineField,
-    list: ListField,
-    multiple: MultipleField,
-    multiline: MultilineField,
-    radio: RadioField,
-    stamp: StampField,
-    time_range: TimeRangeField,
-    title: TitleField,
-    weekdays: WeekdaysField,
-    time: TimeField,
-    my_initial: MyInitialField,
-    my_signature: MySignatureField,
-  };
 
+
+export type FieldType =
+   "text"
+   "number"
+   "signature"
+   "initial"
+   "heading"
+   "paragraph"
+   "checkbox"
+   "company_name"
+   "currency"
+   "date"
+   "date_range"
+   "date_time_range"
+   "dropdown"
+   "email"
+   "file"
+   "fixed_time"
+   "full_name"
+   "horizontal"
+   "list"
+   "multiple"
+   "multiline"
+   "radio"
+   "stamp"
+   "time_range"
+   "title"
+   "weekdays"
+   "time"
+   "my_initial"
+   "my_signature";
+
+export interface Field {
+  fieldId: string;
+  fieldType: FieldType;
+  fieldName?: string;
+  fieldUniqueKey?: string;
+  properties?: Record<string, any>;
+  [key: string]: any;
+}
+
+const map: Record<FieldType, React.FC<{ field: Field }>> = {
+  text: TextField,
+  number: NumberField,
+  signature: SignatureField,
+  initial: InitialField,
+  heading: HeadingField,
+  paragraph: ParagraphField,
+  checkbox: CheckboxField,
+  company_name: CompanyNameField,
+  currency: CurrencyField,
+  date: DateField,
+  date_range: DateRangeField,
+  date_time_range: DateTimeRangeField,
+  dropdown: DropdownField,
+  email: EmailField,
+  file: FileField,
+  fixed_time: FixedTimeField,
+  full_name: FullNameField,
+  horizontal: HorizontalLineField,
+  list: ListField,
+  multiple: MultipleField,
+  multiline: MultilineField,
+  radio: RadioField,
+  stamp: StampField,
+  time_range: TimeRangeField,
+  title: TitleField,
+  weekdays: WeekdaysField,
+  time: TimeField,
+  my_initial: MyInitialField,
+  my_signature: MySignatureField,
+};
+
+const FieldRenderer = ({ field }: { field: Field }) => {
   const Component = map[field.fieldType];
-  if (!Component) return <div className="text-red-500">UNKNOWN FIELD TYPE: {field.fieldType}</div>;
+
+  if (!Component) {
+    return (
+      <div className="text-red-500 font-semibold">
+         UNKNOWN FIELD TYPE: {field.fieldType}
+      </div>
+    );
+  }
 
   return <Component field={field} />;
 };

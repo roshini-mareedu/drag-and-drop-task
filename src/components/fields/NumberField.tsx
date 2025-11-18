@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input"
 
-const NumberField = ({ field }) => {
+interface Field{
+  fieldId: string;
+  fieldType: string;
+  properties: any;
+}
+const NumberField = ({ field } : {field:Field}) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
 
   const [value, setValue] = useState(props.value || "");
 
-  // Mask number value if enabled
   const displayValue = props.maskFieldValue
     ? "*".repeat(value.length)
     : value;
@@ -15,7 +19,6 @@ const NumberField = ({ field }) => {
   return (
     <div className="flex flex-col w-full">
 
-      {/* Dynamic Label */}
       {labelProps?.showFieldLabel && (
         <label
           className="mb-1"
@@ -31,7 +34,6 @@ const NumberField = ({ field }) => {
         </label>
       )}
 
-      {/* SPLIT MODE (like OTP boxes) */}
       {props.splitMode ? (
         <div className="flex gap-1">
           {Array.from({ length: props.splitBoxes.count }).map((_, idx) => (
@@ -41,7 +43,7 @@ const NumberField = ({ field }) => {
               value={displayValue[idx] || ""}
               onChange={(e) => {
                 const arr = value.split("");
-                const newVal = e.target.value.replace(/[^0-9]/g, ""); // only digits
+                const newVal = e.target.value.replace(/[^0-9]/g, ""); 
                 arr[idx] = newVal;
                 setValue(arr.join(""));
               }}
@@ -55,14 +57,13 @@ const NumberField = ({ field }) => {
           ))}
         </div>
       ) : (
-        // NORMAL NUMBER INPUT
         <Input
           type={props.maskFieldValue ? "password" : "text"}
           placeholder={props.placeholder}
           required={props.required}
           value={displayValue}
           onChange={(e) => {
-            const numeric = e.target.value.replace(/[^0-9]/g, ""); // only numbers allowed
+            const numeric = e.target.value.replace(/[^0-9]/g, ""); 
             setValue(numeric);
           }}
           style={{

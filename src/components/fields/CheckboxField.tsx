@@ -2,7 +2,12 @@ import { useState } from "react";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
 
-const CheckboxField = ({ field }: any) => {
+interface Field {
+  fieldId: string;
+  fieldType: string;
+  properties: any;
+}
+const CheckboxField = ({ field } : { field: Field }) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
 
@@ -42,7 +47,7 @@ const CheckboxField = ({ field }: any) => {
         <span className="text-sm">{props.label}</span>
 
         {props.useCrossmark && checked && (
-          <span className="text-lg text-red-600 pointer-events-none">✗</span>
+          <span className="text-lg text-red-600 pointer-events-none">X</span>
         )}
       </Label>
 

@@ -1,6 +1,11 @@
 import { useDraggable } from "@dnd-kit/core";
 
-const DraggableItem = ({ field } : any) => {
+interface Field{
+  fieldId : string,
+  fieldType: string,
+  properties: any,
+}
+const DraggableItem = ({ field } : {field:Field}) => {
   const { setNodeRef, listeners, attributes } = useDraggable({
     id: field.fieldId,
     data: { field },

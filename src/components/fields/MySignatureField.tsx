@@ -1,6 +1,11 @@
 import { Label } from "@/components/ui/label";
 
-const MySignatureField = ({ field }: any) => {
+interface Field{
+  fieldId: string;
+  fieldType: string;
+  properties: any;
+}
+const MySignatureField = ({ field }: {field:Field}) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
 

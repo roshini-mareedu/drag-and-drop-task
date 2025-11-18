@@ -2,7 +2,12 @@ import  { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "../ui/label";
 
-const TimeRangeField = ({ field }: any) => {
+interface Field{
+  fieldId: string;
+  fieldType: string;
+  properties: any;
+}
+const TimeRangeField = ({ field }:{field:Field}) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
 

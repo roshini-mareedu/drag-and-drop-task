@@ -1,62 +1,16 @@
-// import React, { useState } from "react";
-
-// const RadioField = ({ field } : any) => {
-//   const props = field.properties;
-//   const labelProps = props.fieldLabelProperties;
-
-//   const [selected, setSelected] = useState(props.value || "");
-
-//   return (
-//     <div className="flex flex-col">
-
-//       {/* Dynamic label */}
-//       {labelProps?.showFieldLabel && (
-//         <label
-//           className="mb-1"
-//           style={{
-//             color: labelProps.color,
-//             fontSize: labelProps.fontsize,
-//             fontFamily: labelProps.fontFamily,
-//             textAlign: labelProps.textAlign,
-//           }}
-//         >
-//           {labelProps.fieldLabel}
-//           {props.required && <span className="text-red-500 ml-1">*</span>}
-//         </label>
-//       )}
-
-//       {/* Radio Options */}
-//       <div className="flex gap-4">
-//         {props.options?.map((option, index) => (
-//           <label key={index} className="flex items-center gap-2 cursor-pointer">
-//             <input
-//               type="radio"
-//               name={field.fieldId}
-//               value={option}
-//               checked={selected === option}
-//               onChange={(e) => setSelected(e.target.value)}
-//               required={props.required}
-//               className="h-4 w-4"
-//             />
-//             <span>{option}</span>
-//           </label>
-//         ))}
-//       </div>
-
-//     </div>
-//   );
-// };
-
-// export default RadioField;
-
-
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   RadioGroup,
   RadioGroupItem,
 } from "@/components/ui/radio-group";
+import { Label } from "../ui/label";
 
-const RadioField = ({ field }: any) => {
+interface Field{
+  fieldId: string;
+  fieldType: string;
+  properties: any;
+}
+const RadioField = ({ field }: {field:Field}) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
 
@@ -65,9 +19,8 @@ const RadioField = ({ field }: any) => {
   return (
     <div className="flex flex-col gap-1">
 
-      {/* Field Label */}
       {labelProps?.showFieldLabel && (
-        <label
+        <Label
           className="text-sm font-medium"
           style={{
             color: labelProps.color,
@@ -78,7 +31,7 @@ const RadioField = ({ field }: any) => {
         >
           {labelProps.fieldLabel}
           {props.required && <span className="text-red-500 ml-1">*</span>}
-        </label>
+        </Label>
       )}
 
       <RadioGroup
@@ -87,7 +40,7 @@ const RadioField = ({ field }: any) => {
         className="flex gap-4"
       >
         {props.options?.map((option: string, index: number) => (
-          <label
+          <Label
             key={index}
             className="flex items-center gap-2 cursor-pointer text-sm"
           >
@@ -97,7 +50,7 @@ const RadioField = ({ field }: any) => {
               required={props.required}
             />
             <span>{option}</span>
-          </label>
+          </Label>
         ))}
       </RadioGroup>
     </div>

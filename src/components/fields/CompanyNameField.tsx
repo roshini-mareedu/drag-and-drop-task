@@ -2,7 +2,12 @@ import  { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "../ui/label";
 
-const CompanyNameField = ({ field }: any) => {
+interface Field{
+  fieldId: string;
+  fieldType: string;
+  properties: any;
+}
+const CompanyNameField = ({ field }: {field :  Field}) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
 
