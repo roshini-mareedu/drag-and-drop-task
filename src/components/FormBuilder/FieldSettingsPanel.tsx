@@ -1,11 +1,34 @@
-import React from "react";
-import type { CanvasField } from "./FormBuilder";
+import React from 'react'
+import type { CanvasField } from './FormBuilder'
+
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+
+import { Label } from '@/components/ui/label'
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from '@/components/ui/popover'
+import {
+  Command,
+  CommandGroup,
+  CommandItem,
+  CommandInput,
+} from '@/components/ui/command'
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectItem,
+  SelectValue,
+} from '@/components/ui/select'
+import CurrencySettings from '../settings/CurrencySettings'
 
 interface FieldSettingsPanelProps {
-  selectedField: CanvasField | null;
-  allFields: CanvasField[]; // for dropdown of all fields on canvas
-  onUpdateField: (updated: CanvasField) => void;
-  onSelectFieldById: (canvasId: string) => void;
+  selectedField: CanvasField | null
+  allFields: CanvasField[]
+  onUpdateField: (updated: CanvasField) => void
+  onSelectFieldById: (canvasId: string) => void
 }
 
 const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
@@ -14,171 +37,237 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
   onUpdateField,
   onSelectFieldById,
 }) => {
-  // 🔹 When no field is selected
   if (!selectedField) {
     return (
-      <div className="p-4 h-full flex flex-col gap-4">
-        <h2 className="font-bold text-lg">Field Settings</h2>
-
-        {/* Dropdown: select a field from all canvas fields */}
-        <div>
-          <label className="block text-xs font-semibold text-gray-600 mb-1">
-            Select field
-          </label>
-          <select
-            className="w-full border rounded px-2 py-1 text-sm"
-            onChange={(e) => {
-              if (!e.target.value) return;
-              onSelectFieldById(e.target.value);
-            }}
-            defaultValue=""
-          >
-            <option value="">-- Choose a field --</option>
-            {allFields.map((f) => (
-              <option key={f.canvasId} value={f.canvasId}>
-                {f.properties?.label || f.fieldName || f.fieldType}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div className="p-4 h-full">
+        <h2 className="font-semibold text-base">Field Settings</h2>
       </div>
-    );
+    )
   }
 
-  const props = selectedField.properties || {};
-  const labelProps = props.fieldLabelProperties || {};
+  const props = selectedField.properties
+  const labelProps = props.fieldLabelProperties
 
   const updateProp = (key: string, value: any) => {
-    const updated: CanvasField = {
+    onUpdateField({
+      ...selectedField,
+      properties: { ...props, [key]: value },
+    })
+  }
+
+  const updateLabelProp = (key: string, value: any) => {
+    onUpdateField({
+      ...selectedField,
+      properties: {
+        ...props,
+        fieldLabelProperties: { ...labelProps, [key]: value },
+      },
+    })
+  }
+  const updateCurrencyProp = (key: string, value: any) => {
+    onUpdateField({
       ...selectedField,
       properties: {
         ...props,
         [key]: value,
       },
-    };
-    onUpdateField(updated);
-  };
-
-  const updateLabelProp = (key: string, value: any) => {
-    const updated: CanvasField = {
-      ...selectedField,
-      properties: {
-        ...props,
-        fieldLabelProperties: {
-          ...labelProps,
-          [key]: value,
-        },
-      },
-    };
-    onUpdateField(updated);
-  };
-
-  const primitiveProps = Object.entries(props).filter(
-    ([key, value]) =>
-      key !== "fieldLabelProperties" && typeof value !== "object"
-  );
-
-  const primitiveLabelProps = Object.entries(labelProps).filter(
-    ([, value]) => typeof value !== "object"
-  );
+    })
+  }
 
   return (
-    <div className="p-4 h-full flex flex-col gap-4 text-sm">
-      {/* Top select for quick switching between fields */}
-      <div>
-        <label className="block text-xs font-semibold text-gray-600 mb-1">
-          Select field
-        </label>
-        <select
-          className="w-full border rounded px-2 py-1 text-sm"
-          value={selectedField.canvasId}
-          onChange={(e) => onSelectFieldById(e.target.value)}
-        >
-          {allFields.map((f) => (
-            <option key={f.canvasId} value={f.canvasId}>
-              {f.properties?.label || f.fieldName || f.fieldType}
-            </option>
-          ))}
-        </select>
-      </div>
+    <div className="p-4 h-full text-sm overflow-y-auto">
+      <Tabs defaultValue="properties" className="w-full">
+        <TabsList className="w-full">
+          <TabsTrigger value="properties" className="flex-1">
+            Properties
+          </TabsTrigger>
 
-      <h2 className="font-bold text-base mt-2">
-        {props.label || selectedField.fieldType}
-      </h2>
+          <TabsTrigger value="formatting" className="flex-1">
+            Formatting
+          </TabsTrigger>
+        </TabsList>
 
-      {/* BASIC PROPERTIES (from JSON) */}
-      <div className="space-y-2">
-        <h3 className="font-semibold text-xs uppercase text-gray-500">
-          Field Properties
-        </h3>
+        <TabsContent value="properties" className="mt-4 space-y-4">
+          {/* Label */}
+          <div className="bg-pink-50 rounded-lg p-3 space-y-1">
+            <Label className="text-xs">Field Label</Label>
 
-        {primitiveProps.map(([key, value]) => {
-          if (typeof value === "boolean") {
-            return (
-              <label key={key} className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={value}
-                  onChange={(e) => updateProp(key, e.target.checked)}
-                />
-                <span className="text-xs font-medium">{key}</span>
-              </label>
-            );
-          }
+            <input
+              className="border rounded px-2 py-1 text-xs w-full"
+              value={labelProps.fieldLabel || ''}
+              onChange={(e) => updateLabelProp('fieldLabel', e.target.value)}
+              placeholder="Enter field name"
+            />
+          </div>
 
-          return (
-            <div key={key} className="flex flex-col gap-1">
-              <label className="text-xs font-medium text-gray-600">
-                {key}
-              </label>
+          {'placeholder' in props && (
+            <div className="bg-pink-50 rounded-lg p-3 space-y-1">
+              <Label className="text-xs">Placeholder</Label>
+
               <input
-                className="border rounded px-2 py-1 text-xs"
-                value={value ?? ""}
-                onChange={(e) => updateProp(key, e.target.value)}
+                className="border rounded px-2 py-1 text-xs w-full"
+                value={props.placeholder || ''}
+                onChange={(e) => updateProp('placeholder', e.target.value)}
+                placeholder="Enter placeholder"
               />
             </div>
-          );
-        })}
-      </div>
+          )}
 
-      {/* LABEL PROPERTIES */}
-      {Object.keys(labelProps).length > 0 && (
-        <div className="space-y-2 pt-2 border-t">
-          <h3 className="font-semibold text-xs uppercase text-gray-500">
-            Field Label Properties
-          </h3>
+          {selectedField.fieldType === 'currency' && (
+            <CurrencySettings
+              field={selectedField}
+              update={updateCurrencyProp}
+            />
+          )}
 
-          {primitiveLabelProps.map(([key, value]) => {
-            if (typeof value === "boolean") {
-              return (
-                <label key={key} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={value}
-                    onChange={(e) => updateLabelProp(key, e.target.checked)}
+          <div className="bg-pink-50 rounded-lg p-3 space-y-2">
+            <h3 className="text-xs font-semibold text-gray-600">Settings</h3>
+
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={props.required || false}
+                onChange={(e) => updateProp('required', e.target.checked)}
+                className="h-4 w-4 accent-pink-500"
+              />
+
+              <span className="text-xs font-medium">Required Field</span>
+            </label>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="formatting" className="mt-4 space-y-4">
+          <div className="border rounded-xl p-4 space-y-4 bg-pink-50">
+            <h3 className="text-xs font-semibold uppercase text-gray-500">
+              Field Label Styling
+            </h3>
+            <div className="flex flex-col gap-1">
+              <Label className="text-xs">Color</Label>
+
+              <Popover>
+                <PopoverTrigger className="w-full h-8 border rounded-md p-1 flex items-center justify-between text-xs">
+                  {labelProps.color}
+                  <div
+                    className="w-5 h-5 rounded-md border"
+                    style={{ background: labelProps.color }}
                   />
-                  <span className="text-xs font-medium">{key}</span>
-                </label>
-              );
-            }
+                </PopoverTrigger>
 
-            return (
-              <div key={key} className="flex flex-col gap-1">
-                <label className="text-xs font-medium text-gray-600">
-                  {key}
-                </label>
-                <input
-                  className="border rounded px-2 py-1 text-xs"
-                  value={value ?? ""}
-                  onChange={(e) => updateLabelProp(key, e.target.value)}
-                />
+                <PopoverContent className="w-64 p-0">
+                  <Command>
+                    <CommandInput placeholder="Search color..." />
+                    <CommandGroup>
+                      {[
+                        '#000000',
+                        '#333333',
+                        '#555555',
+                        '#888888',
+                        '#ffffff',
+                        '#e91e63',
+                        '#ff9800',
+                        '#4caf50',
+                        '#2196f3',
+                        '#9c27b0',
+                      ].map((clr) => (
+                        <CommandItem
+                          key={clr}
+                          value={clr}
+                          onSelect={() => updateLabelProp('color', clr)}
+                        >
+                          <div
+                            className="w-4 h-4 rounded-full border mr-2"
+                            style={{ background: clr }}
+                          />
+                          {clr}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <Label className="text-xs">Font Size</Label>
+
+              <Select
+                value={labelProps.fontsize}
+                onValueChange={(val) => updateLabelProp('fontsize', val)}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+
+                <SelectContent>
+                  {[10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28].map(
+                    (size) => (
+                      <SelectItem key={size} value={`${size}px`}>
+                        {size}px
+                      </SelectItem>
+                    ),
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <Label className="text-xs">Font Family</Label>
+
+              <Select
+                value={labelProps.fontFamily}
+                onValueChange={(val) => updateLabelProp('fontFamily', val)}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {[
+                    'Arial',
+                    'Inter',
+                    'Roboto',
+                    'Poppins',
+                    'Montserrat',
+                    'Georgia',
+                    'Times New Roman',
+                  ].map((font) => (
+                    <SelectItem value={font} key={font}>
+                      {font}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex flex-col gap-1">
+              <Label className="text-xs">Alignment</Label>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => updateLabelProp('textAlign', 'left')}
+                  className={`border rounded-md p-2 ${labelProps.textAlign === 'left' ? 'bg-pink-300' : ''}`}
+                >
+                  L
+                </button>
+                <button
+                  onClick={() => updateLabelProp('textAlign', 'center')}
+                  className={`border rounded-md p-2 ${labelProps.textAlign === 'center' ? 'bg-pink-300' : ''}`}
+                >
+                  C
+                </button>
+
+                <button
+                  onClick={() => updateLabelProp('textAlign', 'right')}
+                  className={`border rounded-md p-2 ${labelProps.textAlign === 'right' ? 'bg-pink-300' : ''}`}
+                >
+                  R
+                </button>
               </div>
-            );
-          })}
-        </div>
-      )}
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
-  );
-};
+  )
+}
 
-export default FieldSettingsPanel;
+export default FieldSettingsPanel
