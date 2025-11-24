@@ -88,24 +88,26 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
         </TabsList>
 
         <TabsContent value="properties" className="mt-4 space-y-4">
-          {/* Label */}
-          <div className="bg-pink-50 rounded-lg p-3 space-y-1">
-            <Label className="text-xs">Field Label</Label>
-
+          <div className="bg-pink-100 rounded-lg p-4 space-y-2">
+            <Label className="text-sm font-semibold">
+              Field Label Properties
+            </Label>
             <input
-              className="border rounded px-2 py-1 text-xs w-full"
+              className=" border rounded px-3 py-2 text-sm w-full  bg-white text-gray-800 focus:outline-none focus:ring-0"
+              style={{ height: '38px' }}
               value={labelProps.fieldLabel || ''}
               onChange={(e) => updateLabelProp('fieldLabel', e.target.value)}
-              placeholder="Enter field name"
+              placeholder="Enter field label"
             />
           </div>
 
           {'placeholder' in props && (
-            <div className="bg-pink-50 rounded-lg p-3 space-y-1">
-              <Label className="text-xs">Placeholder</Label>
+            <div className="bg-pink-100 rounded-lg p-4 space-y-2">
+              <Label className="text-sm font-semibold">Placeholder</Label>
 
               <input
-                className="border rounded px-2 py-1 text-xs w-full"
+                className="border rounded px-3 py-2 text-sm w-full focus:outline-none focus:ring-0 bg-white text-gray-800"
+                style={{ height: '38px' }}
                 value={props.placeholder || ''}
                 onChange={(e) => updateProp('placeholder', e.target.value)}
                 placeholder="Enter placeholder"
@@ -120,18 +122,19 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
             />
           )}
 
-          <div className="bg-pink-50 rounded-lg p-3 space-y-2">
-            <h3 className="text-xs font-semibold text-gray-600">Settings</h3>
+          <div className="bg-pink-100 rounded-lg p-4 space-y-2">
+            <h3 className="text-sm font-semibold text-black">Settings</h3>
 
-            <label className="flex items-center gap-2 cursor-pointer">
+            <label className="flex items-center gap-3 cursor-pointer">
               <input
                 type="checkbox"
                 checked={props.required || false}
                 onChange={(e) => updateProp('required', e.target.checked)}
-                className="h-4 w-4 accent-pink-500"
+                className="h-5 w-5 accent-pink-500"
+                style={{ cursor: 'pointer' }}
               />
 
-              <span className="text-xs font-medium">Required Field</span>
+              <span className="text-sm font-medium">Required Field</span>
             </label>
           </div>
         </TabsContent>
