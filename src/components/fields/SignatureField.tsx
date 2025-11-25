@@ -1,26 +1,25 @@
-import { Label } from "../ui/label";
+import { Label } from '../ui/label'
 
-interface Field{
-  fieldId: string;
-  fieldType: string;
-  properties: any;
+interface Field {
+  fieldId: string
+  fieldType: string
+  properties: any
 }
-const SignatureField = ({ field }: {field:Field}) => {
-  const props = field.properties;
-  const labelProps = props.fieldLabelProperties;
+const SignatureField = ({ field }: { field: Field }) => {
+  const props = field.properties
+  const labelProps = props.fieldLabelProperties
 
   return (
     <div className="flex flex-col gap-2 w-full">
-
-      
       {labelProps?.showFieldLabel && (
         <Label
-          className="text-sm font-medium"
+          className="text-sm font-medium block w-full"
           style={{
             color: labelProps.color,
             fontSize: labelProps.fontsize,
             fontFamily: labelProps.fontFamily,
-            textAlign: labelProps.textAlign,
+            textAlign:
+              (labelProps.textAlign as 'left' | 'center' | 'right') || 'left',
           }}
         >
           {labelProps.fieldLabel}
@@ -30,18 +29,16 @@ const SignatureField = ({ field }: {field:Field}) => {
 
       <div
         className="rounded-md border border-dashed flex items-center justify-center"
-        style={{ height: "90px" }}
+        style={{ height: '90px' }}
       >
-        {props.placeholder || "Signature"}
+        {props.placeholder || 'Signature'}
       </div>
 
       {props.printSign && props.value && (
-        <p className="text-xs text-muted-foreground">
-          Signed: {props.value}
-        </p>
+        <p className="text-xs text-muted-foreground">Signed: {props.value}</p>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default SignatureField;
+export default SignatureField

@@ -1,35 +1,35 @@
-import React, { useState } from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
+import React, { useState } from 'react'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
+import { Card, CardContent } from '@/components/ui/card'
 
-interface Field{
-  fieldId: string;
-  fieldType: string;
-  properties: any;
+interface Field {
+  fieldId: string
+  fieldType: string
+  properties: any
 }
-const FileField = ({ field }: {field: Field}) => {
-  const props = field.properties;
-  const labelProps = props.fieldLabelProperties;
+const FileField = ({ field }: { field: Field }) => {
+  const props = field.properties
+  const labelProps = props.fieldLabelProperties
 
-  const [files, setFiles] = useState<string[]>([]);
+  const [files, setFiles] = useState<string[]>([])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selected = Array.from(e.target.files || []).map((file) => file.name);
-    setFiles(selected);
-  };
+    const selected = Array.from(e.target.files || []).map((file) => file.name)
+    setFiles(selected)
+  }
 
   return (
     <div className="flex flex-col w-full gap-2">
-
       {labelProps?.showFieldLabel && (
         <Label
-          className="font-medium"
+          className="text-sm font-medium block w-full"
           style={{
             color: labelProps.color,
             fontSize: labelProps.fontsize,
             fontFamily: labelProps.fontFamily,
-            textAlign: labelProps.textAlign,
+            textAlign:
+              (labelProps.textAlign as 'left' | 'center' | 'right') || 'left',
           }}
         >
           {labelProps.fieldLabel}
@@ -59,7 +59,7 @@ const FileField = ({ field }: {field: Field}) => {
         </Card>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default FileField;
+export default FileField

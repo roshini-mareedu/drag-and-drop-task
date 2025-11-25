@@ -1,35 +1,35 @@
-import  { useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
+import { useState } from 'react'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '../ui/label'
 
-
-interface Field{
-  fieldId: string;
-  fieldType: string;
-  properties: any;
+interface Field {
+  fieldId: string
+  fieldType: string
+  properties: any
 }
-const MultilineField = ({ field }: {field:Field}) => {
-  const props = field.properties;
-  const labelProps = props.fieldLabelProperties;
+const MultilineField = ({ field }: { field: Field }) => {
+  const props = field.properties
+  const labelProps = props.fieldLabelProperties
 
-  const [value, setValue] = useState(props.value || "");
+  const [value, setValue] = useState(props.value || '')
 
   return (
     <div className="flex flex-col gap-1 w-full">
-
       {/* Label */}
       {labelProps?.showFieldLabel && (
-        <label
-          className="text-sm font-medium"
+        <Label
+          className="text-sm font-medium block w-full"
           style={{
             color: labelProps.color,
             fontSize: labelProps.fontsize,
             fontFamily: labelProps.fontFamily,
-            textAlign: labelProps.textAlign,
+            textAlign:
+              (labelProps.textAlign as 'left' | 'center' | 'right') || 'left',
           }}
         >
           {labelProps.fieldLabel}
           {props.required && <span className="text-red-500 ml-1">*</span>}
-        </label>
+        </Label>
       )}
 
       <Textarea
@@ -48,7 +48,7 @@ const MultilineField = ({ field }: {field:Field}) => {
         }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default MultilineField;
+export default MultilineField

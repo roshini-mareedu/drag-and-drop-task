@@ -1,66 +1,64 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-} from "@/components/ui/popover";
+} from '@/components/ui/popover'
 import {
   Command,
   CommandGroup,
   CommandItem,
   CommandInput,
   CommandEmpty,
-} from "@/components/ui/command";
-import { Check, ChevronsUpDown, X } from "lucide-react";
-import { Label } from "../ui/label";
+} from '@/components/ui/command'
+import { Check, ChevronsUpDown, X } from 'lucide-react'
+import { Label } from '../ui/label'
 
-interface Field{
-  fieldId: string;
-  fieldType: string;
-  properties: any;
+interface Field {
+  fieldId: string
+  fieldType: string
+  properties: any
 }
-const MultipleField = ({ field }: {field:Field}) => {
-  const props = field.properties;
-  const labelProps = props.fieldLabelProperties;
+const MultipleField = ({ field }: { field: Field }) => {
+  const props = field.properties
+  const labelProps = props.fieldLabelProperties
 
   const initialValues = props.value
-    ? props.value.split(",").map((v : any) => v.trim())
-    : [];
+    ? props.value.split(',').map((v: any) => v.trim())
+    : []
 
-  const [values, setValues] = useState<string[]>(initialValues);
-  const [open, setOpen] = useState(false);
+  const [values, setValues] = useState<string[]>(initialValues)
+  const [open, setOpen] = useState(false)
 
   const toggleValue = (option: string) => {
-    let updated = [...values];
+    let updated = [...values]
 
     if (updated.includes(option)) {
-      updated = updated.filter((v) => v !== option);
+      updated = updated.filter((v) => v !== option)
     } else {
-      updated.push(option);
+      updated.push(option)
     }
 
-    setValues(updated);
-  };
+    setValues(updated)
+  }
 
-  const isBelowMin =
-    props.minSelect && values.length < props.minSelect;
+  const isBelowMin = props.minSelect && values.length < props.minSelect
 
-  const isAboveMax =
-    props.maxSelect && values.length > props.maxSelect;
+  const isAboveMax = props.maxSelect && values.length > props.maxSelect
 
   return (
     <div className="flex flex-col gap-2 w-full">
-
       {labelProps?.showFieldLabel && (
         <Label
-          className="text-sm font-medium"
+          className="text-sm font-medium block w-full"
           style={{
             color: labelProps.color,
             fontSize: labelProps.fontsize,
             fontFamily: labelProps.fontFamily,
-            textAlign: labelProps.textAlign,
+            textAlign:
+              (labelProps.textAlign as 'left' | 'center' | 'right') || 'left',
           }}
         >
           {labelProps.fieldLabel}
@@ -70,13 +68,10 @@ const MultipleField = ({ field }: {field:Field}) => {
 
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            className="w-full justify-between"
-          >
+          <Button variant="outline" className="w-full justify-between">
             {values.length > 0
               ? `${values.length} selected`
-              : props.placeholder || "Select options"}
+              : props.placeholder || 'Select options'}
             <ChevronsUpDown className="h-4 w-4 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -88,7 +83,7 @@ const MultipleField = ({ field }: {field:Field}) => {
 
             <CommandGroup>
               {props.options?.map((option: string, index: number) => {
-                const selected = values.includes(option);
+                const selected = values.includes(option)
 
                 return (
                   <CommandItem
@@ -99,12 +94,12 @@ const MultipleField = ({ field }: {field:Field}) => {
                   >
                     <Check
                       className={`mr-2 h-4 w-4 ${
-                        selected ? "opacity-100" : "opacity-0"
+                        selected ? 'opacity-100' : 'opacity-0'
                       }`}
                     />
                     {option}
                   </CommandItem>
-                );
+                )
               })}
             </CommandGroup>
           </Command>
@@ -113,7 +108,11 @@ const MultipleField = ({ field }: {field:Field}) => {
 
       <div className="flex flex-wrap gap-2">
         {values.map((v) => (
-          <Badge key={v} variant="secondary" className="flex items-center gap-1">
+          <Badge
+            key={v}
+            variant="secondary"
+            className="flex items-center gap-1"
+          >
             {v}
             <X
               className="w-3 h-3 cursor-pointer"
@@ -134,7 +133,7 @@ const MultipleField = ({ field }: {field:Field}) => {
         </span>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default MultipleField;
+export default MultipleField

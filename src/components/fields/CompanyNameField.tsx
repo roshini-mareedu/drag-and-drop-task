@@ -1,38 +1,37 @@
-import  { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Label } from "../ui/label";
+import { useState } from 'react'
+import { Input } from '@/components/ui/input'
+import { Label } from '../ui/label'
 
-interface Field{
-  fieldId: string;
-  fieldType: string;
-  properties: any;
+interface Field {
+  fieldId: string
+  fieldType: string
+  properties: any
 }
-const CompanyNameField = ({ field }: {field :  Field}) => {
-  const props = field.properties;
-  const labelProps = props.fieldLabelProperties;
+const CompanyNameField = ({ field }: { field: Field }) => {
+  const props = field.properties
+  const labelProps = props.fieldLabelProperties
 
-  const [value, setValue] = useState(props.value || "");
+  const [value, setValue] = useState(props.value || '')
 
   return (
     <div className="flex flex-col gap-1 w-full">
-
       {labelProps?.showFieldLabel && (
         <Label
-          className="text-sm font-medium"
+          className="text-sm font-medium block w-full"
           style={{
             color: labelProps.color,
             fontSize: labelProps.fontsize,
             fontFamily: labelProps.fontFamily,
-            textAlign: labelProps.textAlign,
+            textAlign:
+              (labelProps.textAlign as 'left' | 'center' | 'right') || 'left',
           }}
         >
           {labelProps.fieldLabel}
           {props.required && <span className="text-red-500 ml-1">*</span>}
         </Label>
       )}
-
       <Input
-        placeholder={props.placeholder || ""}
+        placeholder={props.placeholder || ''}
         required={props.required}
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -46,7 +45,7 @@ const CompanyNameField = ({ field }: {field :  Field}) => {
         }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default CompanyNameField;
+export default CompanyNameField

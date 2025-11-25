@@ -1,28 +1,28 @@
-import  { useState } from "react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react'
+import { Label } from '@/components/ui/label'
+import { Input } from '@/components/ui/input'
 
-interface Field{
-  fieldId: string;
-  fieldType: string;
-  properties: any;
+interface Field {
+  fieldId: string
+  fieldType: string
+  properties: any
 }
-const FullNameField = ({ field }: {field:Field}) => {
-  const props = field.properties;
-  const labelProps = props.fieldLabelProperties;
-  const [value, setValue] = useState(props.value || "");
+const FullNameField = ({ field }: { field: Field }) => {
+  const props = field.properties
+  const labelProps = props.fieldLabelProperties
+  const [value, setValue] = useState(props.value || '')
 
   return (
     <div className="flex flex-col w-full gap-1">
-
       {labelProps?.showFieldLabel && (
         <Label
-          className="font-medium"
+          className="text-sm font-medium block w-full"
           style={{
             color: labelProps.color,
             fontSize: labelProps.fontsize,
             fontFamily: labelProps.fontFamily,
-            textAlign: labelProps.textAlign,
+            textAlign:
+              (labelProps.textAlign as 'left' | 'center' | 'right') || 'left',
           }}
         >
           {labelProps.fieldLabel}
@@ -46,7 +46,7 @@ const FullNameField = ({ field }: {field:Field}) => {
         }}
       />
     </div>
-  );
-};
+  )
+}
 
-export default FullNameField;
+export default FullNameField

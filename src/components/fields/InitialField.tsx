@@ -1,4 +1,5 @@
 import { Input } from '../ui/input'
+import { Label } from '../ui/label'
 
 interface Field {
   fieldId: string
@@ -13,18 +14,19 @@ const InitialField = ({ field }: { field: Field }) => {
   return (
     <div className="flex flex-col">
       {labelProps?.showFieldLabel && (
-        <label
-          className="mb-1"
+        <Label
+          className="text-sm font-medium block w-full"
           style={{
             color: labelProps.color,
             fontSize: labelProps.fontsize,
             fontFamily: labelProps.fontFamily,
-            textAlign: labelProps.textAlign,
+            textAlign:
+              (labelProps.textAlign as 'left' | 'center' | 'right') || 'left',
           }}
         >
           {labelProps.fieldLabel}
           {props.required && <span className="text-red-500 ml-1">*</span>}
-        </label>
+        </Label>
       )}
 
       <Input

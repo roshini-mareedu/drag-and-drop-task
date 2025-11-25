@@ -1,38 +1,44 @@
-import { useState } from "react";
+import { useState } from 'react'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { Label } from "../ui/label";
-import clsx from "clsx";
+} from '@/components/ui/popover'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '@/components/ui/command'
+import { Check, ChevronsUpDown } from 'lucide-react'
+import { Label } from '../ui/label'
+import clsx from 'clsx'
 
 interface Field {
-  fieldId: string;
-  fieldType: string;
-  properties: any;
+  fieldId: string
+  fieldType: string
+  properties: any
 }
 
 const DropdownField = ({ field }: { field: Field }) => {
-  const props = field.properties;
-  const labelProps = props.fieldLabelProperties;
+  const props = field.properties
+  const labelProps = props.fieldLabelProperties
 
-  const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(props.value || "");
+  const [open, setOpen] = useState(false)
+  const [selected, setSelected] = useState(props.value || '')
 
   return (
     <div className="flex flex-col gap-1 w-full">
-
       {labelProps?.showFieldLabel && (
         <Label
-          className="text-sm font-medium"
+          className="text-sm font-medium block w-full"
           style={{
             color: labelProps.color,
-            fontFamily: labelProps.fontFamily,
             fontSize: labelProps.fontsize,
-            textAlign: labelProps.textAlign,
+            fontFamily: labelProps.fontFamily,
+            textAlign:
+              (labelProps.textAlign as 'left' | 'center' | 'right') || 'left',
           }}
         >
           {labelProps.fieldLabel}
@@ -42,9 +48,7 @@ const DropdownField = ({ field }: { field: Field }) => {
 
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger className="w-full">
-          <button
-            className="w-full flex justify-between items-center border rounded-md px-3 py-2 text-sm"
-          >
+          <button className="w-full flex justify-between items-center border rounded-md px-3 py-2 text-sm">
             {selected || props.placeholder}
             <ChevronsUpDown size={18} />
           </button>
@@ -62,16 +66,16 @@ const DropdownField = ({ field }: { field: Field }) => {
                   key={index}
                   value={option}
                   onSelect={() => {
-                    setSelected(option);
-                    setOpen(false);
+                    setSelected(option)
+                    setOpen(false)
                   }}
                 >
                   {option}
 
                   <Check
                     className={clsx(
-                      "ml-auto h-4 w-4",
-                      selected === option ? "opacity-100" : "opacity-0"
+                      'ml-auto h-4 w-4',
+                      selected === option ? 'opacity-100' : 'opacity-0',
                     )}
                   />
                 </CommandItem>
@@ -81,7 +85,7 @@ const DropdownField = ({ field }: { field: Field }) => {
         </PopoverContent>
       </Popover>
     </div>
-  );
-};
+  )
+}
 
-export default DropdownField;
+export default DropdownField

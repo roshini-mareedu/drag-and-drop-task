@@ -1,45 +1,42 @@
-import { useState } from "react";
-import { Checkbox } from "../ui/checkbox";
-import { Label } from "../ui/label";
+import { useState } from 'react'
+import { Checkbox } from '../ui/checkbox'
+import { Label } from '../ui/label'
 
 interface Field {
-  fieldId: string;
-  fieldType: string;
-  properties: any;
+  fieldId: string
+  fieldType: string
+  properties: any
 }
-const CheckboxField = ({ field } : { field: Field }) => {
-  const props = field.properties;
-  const labelProps = props.fieldLabelProperties;
+const CheckboxField = ({ field }: { field: Field }) => {
+  const props = field.properties
+  const labelProps = props.fieldLabelProperties
 
   const defaultChecked =
-    props.value === true ||
-    props.value === "true" ||
-    props.value === 1;
+    props.value === true || props.value === 'true' || props.value === 1
 
-  const [checked, setChecked] = useState(defaultChecked);
+  const [checked, setChecked] = useState(defaultChecked)
 
   return (
     <div className="flex flex-col gap-1">
-
       {labelProps?.showFieldLabel && (
         <Label
-          className="text-sm font-medium"
+          className="text-sm font-medium block w-full"
           style={{
             color: labelProps.color,
             fontSize: labelProps.fontsize,
             fontFamily: labelProps.fontFamily,
-            textAlign: labelProps.textAlign,
+            textAlign:
+              (labelProps.textAlign as 'left' | 'center' | 'right') || 'left',
           }}
         >
           {labelProps.fieldLabel}
           {props.required && <span className="text-red-500 ml-1">*</span>}
         </Label>
       )}
-
       <Label className="flex items-center gap-2 cursor-pointer">
         <Checkbox
           checked={checked}
-          onCheckedChange={(val : any) => setChecked(Boolean(val))}
+          onCheckedChange={(val: any) => setChecked(Boolean(val))}
           className="border-gray-400"
           required={props.required}
         />
@@ -54,11 +51,11 @@ const CheckboxField = ({ field } : { field: Field }) => {
       {props.checkboxGroup?.enabled && (
         <small className="text-xs text-gray-500">
           Group: {props.checkboxGroup.groupName}
-          {props.checkboxGroup.required && " (required)"}
+          {props.checkboxGroup.required && ' (required)'}
         </small>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default CheckboxField;
+export default CheckboxField

@@ -1,30 +1,29 @@
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Label } from "../ui/label";
+import { useState } from 'react'
+import { Input } from '@/components/ui/input'
+import { Label } from '../ui/label'
 
-interface Field{
-  fieldId: string;
-  fieldType: string;
-  properties: any;
+interface Field {
+  fieldId: string
+  fieldType: string
+  properties: any
 }
-const DateField = ({ field } : { field:Field}) => {
-  const props = field.properties;
-  const labelProps = props.fieldLabelProperties;
+const DateField = ({ field }: { field: Field }) => {
+  const props = field.properties
+  const labelProps = props.fieldLabelProperties
 
-  const value = props.displayValue || props.value || "";
-
+  const value = props.displayValue || props.value || ''
 
   return (
     <div className="flex flex-col gap-1 w-full">
-
       {labelProps?.showFieldLabel && (
         <Label
-          className="text-sm font-medium"
+          className="text-sm font-medium block w-full"
           style={{
             color: labelProps.color,
             fontSize: labelProps.fontsize,
             fontFamily: labelProps.fontFamily,
-            textAlign: labelProps.textAlign,
+            textAlign:
+              (labelProps.textAlign as 'left' | 'center' | 'right') || 'left',
           }}
         >
           {labelProps.fieldLabel}
@@ -38,16 +37,16 @@ const DateField = ({ field } : { field:Field}) => {
             <Input
               key={idx}
               maxLength={1}
-              value={value[idx] || ""}
+              value={value[idx] || ''}
               className="text-center"
               style={{
                 width: props.splitBoxes.width,
                 height: props.splitBoxes.height,
               }}
               onChange={(e) => {
-                const arr = value.split("");
-                arr[idx] = e.target.value;
-                setValue(arr.join(""));
+                const arr = value.split('')
+                arr[idx] = e.target.value
+                setValue(arr.join(''))
               }}
             />
           ))}
@@ -62,7 +61,7 @@ const DateField = ({ field } : { field:Field}) => {
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default DateField;
+export default DateField

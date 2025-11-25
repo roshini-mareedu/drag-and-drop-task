@@ -1,29 +1,29 @@
-import { useState } from "react";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-interface Field{
-  fieldId: string;
-  fieldType: string;
-  properties: any;
+import { useState } from 'react'
+import { Input } from '../ui/input'
+import { Label } from '../ui/label'
+interface Field {
+  fieldId: string
+  fieldType: string
+  properties: any
 }
 
-const EmailField = ({ field } : {field:Field}) => {
-  const props = field.properties;
-  const labelProps = props.fieldLabelProperties;
+const EmailField = ({ field }: { field: Field }) => {
+  const props = field.properties
+  const labelProps = props.fieldLabelProperties
 
-  const [value, setValue] = useState(props.value || "");
+  const [value, setValue] = useState(props.value || '')
 
   return (
     <div className="flex flex-col w-full">
-
       {labelProps?.showFieldLabel && (
         <Label
-          className="mb-1"
+          className="text-sm font-medium block w-full"
           style={{
             color: labelProps.color,
             fontSize: labelProps.fontsize,
             fontFamily: labelProps.fontFamily,
-            textAlign: labelProps.textAlign,
+            textAlign:
+              (labelProps.textAlign as 'left' | 'center' | 'right') || 'left',
           }}
         >
           {labelProps.fieldLabel}
@@ -48,7 +48,7 @@ const EmailField = ({ field } : {field:Field}) => {
         className="border border-gray-300 rounded px-2 py-1"
       />
     </div>
-  );
-};
+  )
+}
 
-export default EmailField;
+export default EmailField

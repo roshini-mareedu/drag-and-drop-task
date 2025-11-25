@@ -1,37 +1,36 @@
-import { useState } from "react";
-import { Input } from "@/components/ui/input"
+import { useState } from 'react'
+import { Input } from '@/components/ui/input'
+import { Label } from '../ui/label'
 
-interface Field{
-  fieldId: string;
-  fieldType: string;
-  properties: any;
+interface Field {
+  fieldId: string
+  fieldType: string
+  properties: any
 }
-const NumberField = ({ field } : {field:Field}) => {
-  const props = field.properties;
-  const labelProps = props.fieldLabelProperties;
+const NumberField = ({ field }: { field: Field }) => {
+  const props = field.properties
+  const labelProps = props.fieldLabelProperties
 
-  const [value, setValue] = useState(props.value || "");
+  const [value, setValue] = useState(props.value || '')
 
-  const displayValue = props.maskFieldValue
-    ? "*".repeat(value.length)
-    : value;
+  const displayValue = props.maskFieldValue ? '*'.repeat(value.length) : value
 
   return (
     <div className="flex flex-col w-full">
-
       {labelProps?.showFieldLabel && (
-        <label
-          className="mb-1"
+        <Label
+          className="text-sm font-medium block w-full"
           style={{
             color: labelProps.color,
             fontSize: labelProps.fontsize,
             fontFamily: labelProps.fontFamily,
-            textAlign: labelProps.textAlign,
+            textAlign:
+              (labelProps.textAlign as 'left' | 'center' | 'right') || 'left',
           }}
         >
           {labelProps.fieldLabel}
           {props.required && <span className="text-red-500 ml-1">*</span>}
-        </label>
+        </Label>
       )}
 
       {props.splitMode ? (
@@ -40,17 +39,17 @@ const NumberField = ({ field } : {field:Field}) => {
             <input
               key={idx}
               maxLength={1}
-              value={displayValue[idx] || ""}
+              value={displayValue[idx] || ''}
               onChange={(e) => {
-                const arr = value.split("");
-                const newVal = e.target.value.replace(/[^0-9]/g, ""); 
-                arr[idx] = newVal;
-                setValue(arr.join(""));
+                const arr = value.split('')
+                const newVal = e.target.value.replace(/[^0-9]/g, '')
+                arr[idx] = newVal
+                setValue(arr.join(''))
               }}
               style={{
                 width: props.splitBoxes.width,
                 height: props.splitBoxes.height,
-                textAlign: "center",
+                textAlign: 'center',
               }}
               className="border border-gray-300 rounded"
             />
@@ -58,13 +57,13 @@ const NumberField = ({ field } : {field:Field}) => {
         </div>
       ) : (
         <Input
-          type={props.maskFieldValue ? "password" : "text"}
+          type={props.maskFieldValue ? 'password' : 'text'}
           placeholder={props.placeholder}
           required={props.required}
           value={displayValue}
           onChange={(e) => {
-            const numeric = e.target.value.replace(/[^0-9]/g, ""); 
-            setValue(numeric);
+            const numeric = e.target.value.replace(/[^0-9]/g, '')
+            setValue(numeric)
           }}
           style={{
             textAlign: props.textAlign,
@@ -78,7 +77,7 @@ const NumberField = ({ field } : {field:Field}) => {
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default NumberField;
+export default NumberField

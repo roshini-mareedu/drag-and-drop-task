@@ -1,32 +1,29 @@
-import  { useState } from "react";
-import {
-  RadioGroup,
-  RadioGroupItem,
-} from "@/components/ui/radio-group";
-import { Label } from "../ui/label";
+import { useState } from 'react'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Label } from '../ui/label'
 
-interface Field{
-  fieldId: string;
-  fieldType: string;
-  properties: any;
+interface Field {
+  fieldId: string
+  fieldType: string
+  properties: any
 }
-const RadioField = ({ field }: {field:Field}) => {
-  const props = field.properties;
-  const labelProps = props.fieldLabelProperties;
+const RadioField = ({ field }: { field: Field }) => {
+  const props = field.properties
+  const labelProps = props.fieldLabelProperties
 
-  const [selected, setSelected] = useState(props.value || "");
+  const [selected, setSelected] = useState(props.value || '')
 
   return (
     <div className="flex flex-col gap-1">
-
       {labelProps?.showFieldLabel && (
         <Label
-          className="text-sm font-medium"
+          className="text-sm font-medium block w-full"
           style={{
             color: labelProps.color,
             fontSize: labelProps.fontsize,
-            textAlign: labelProps.textAlign,
             fontFamily: labelProps.fontFamily,
+            textAlign:
+              (labelProps.textAlign as 'left' | 'center' | 'right') || 'left',
           }}
         >
           {labelProps.fieldLabel}
@@ -54,7 +51,7 @@ const RadioField = ({ field }: {field:Field}) => {
         ))}
       </RadioGroup>
     </div>
-  );
-};
+  )
+}
 
-export default RadioField;
+export default RadioField
