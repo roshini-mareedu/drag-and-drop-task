@@ -1,21 +1,15 @@
-import  { useState } from "react";
-import { Input } from "@/components/ui/input";
 import { Label } from "../ui/label";
+import TimeRangePopup from "../popups/TimeRangePopup";
 
-interface Field{
+interface Field {
   fieldId: string;
   fieldType: string;
   properties: any;
 }
-const TimeRangeField = ({ field }:{field:Field}) => {
+
+const TimeRangeField = ({ field }: { field: Field }) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
-
-  const initial = props.value ? props.value.split("|") : ["", ""];
-  const [startTime, setStartTime] = useState(initial[0]);
-  const [endTime, setEndTime] = useState(initial[1]);
-
-  const is24hr = props.timeFormat === "24";
 
   return (
     <div className="flex flex-col gap-1 w-full">
@@ -35,27 +29,15 @@ const TimeRangeField = ({ field }:{field:Field}) => {
         </Label>
       )}
 
-      <div className="flex items-center gap-3">
-        <Input
-          type={is24hr ? "time" : "text"}
-          placeholder={props.placeholder || "Start Time"}
-          value={startTime}
-          required={props.required}
-          onChange={(e) => setStartTime(e.target.value)}
-          className="w-1/2"
-        />
-
-        <span className="text-gray-500">to</span>
-
-        <Input
-          type={is24hr ? "time" : "text"}
-          placeholder={props.placeholder || "End Time"}
-          value={endTime}
-          required={props.required}
-          onChange={(e) => setEndTime(e.target.value)}
-          className="w-1/2"
-        />
-      </div>
+      <TimeRangePopup
+        value={props.value}
+        is24hr={props.timeFormat === "24"}
+        onChange={(v) =>
+          props.onExternalChange
+            ? props.onExternalChange(v)
+            : (props.value = v)
+        }
+      />
     </div>
   );
 };

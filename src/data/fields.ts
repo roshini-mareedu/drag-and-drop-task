@@ -366,32 +366,6 @@ const FieldsData = [
     userWiseFieldUniqueKey: "RECEIVER_1@multiple_1",
   },
   {
-    fieldName: "daterange-260b1e2f-517c-48db-9fa5-68bec6063c7e",
-    fieldType: "daterange",
-    fieldId: "dc135481-e74b-4597-92fe-b1b755a2a7f5",
-    fieldUniqueKey: "RECEIVER_1@daterange_1",
-    properties: {
-      placeholder: "Select date Range",
-      required: true,
-      label: "Date Range",
-      dateFormat: "MMM dd yyyy",
-      availableDate: "any",
-      value: "",
-      fieldLabelProperties: {
-        fieldLabel: "Date Range 1",
-        showFieldLabel: true,
-        color: "#000000",
-        fontsize: "12px",
-        fontFamily: "Arial",
-        textAlign: "left",
-        labelDisplayMode: "hover",
-      },
-      fieldUniqueKey: "RECEIVER_1@daterange_1",
-    },
-
-    userWiseFieldUniqueKey: "RECEIVER_1@daterange_1",
-  },
-  {
     fieldName: "time-e2e453ed-a2fb-4e71-9346-1cba7f25e87f",
     fieldType: "time",
     fieldId: "03e14d05-0e3b-4990-ae59-6fec21e6c771",
@@ -445,33 +419,6 @@ const FieldsData = [
     },
 
     userWiseFieldUniqueKey: "RECEIVER_1@currency_1",
-  },
-  {
-    fieldName: "date_time-9946ade6-096a-4142-a718-1f89e5c818aa",
-    fieldType: "date_time",
-    fieldId: "1dc87ff8-9c65-492f-bdc0-79d3b2b740d1",
-    fieldUniqueKey: "RECEIVER_1@date_time_1",
-    properties: {
-      placeholder: "Select date and time",
-      required: true,
-      label: "Date Time",
-      dateFormat: "MMM dd yyyy",
-      availableDate: "any",
-      value: "",
-      timeFormat: "24",
-      fieldLabelProperties: {
-        fieldLabel: "Date Time 1",
-        showFieldLabel: true,
-        color: "#000000",
-        fontsize: "12px",
-        fontFamily: "Arial",
-        textAlign: "left",
-        labelDisplayMode: "hover",
-      },
-      fieldUniqueKey: "RECEIVER_1@date_time_1",
-    },
-
-    userWiseFieldUniqueKey: "RECEIVER_1@date_time_1",
   },
   {
     fieldName: "weekdays-c76fa9ca-2c6f-4845-b037-8b2475b3bb2b",

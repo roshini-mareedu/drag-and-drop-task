@@ -23,6 +23,9 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import CurrencySettings from '../settings/CurrencySettings'
+import DateSettings from '../settings/DateSettings'
+import ListSettings from '../settings/ListSettings'
+import FixedTimeSettings from '../settings/FixedTimeSettings'
 
 interface FieldSettingsPanelProps {
   selectedField: CanvasField | null
@@ -55,6 +58,24 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
     })
   }
 
+  const updateDateProp = (newDate: Date) => {
+    const formatted = newDate.toLocaleDateString('en-US', {
+      month: 'short',
+      day: '2-digit',
+      year: 'numeric',
+    })
+
+    onUpdateField({
+      ...selectedField,
+      properties: {
+        ...props,
+        value: formatted,
+        displayValue: formatted,
+        timestamp: newDate.getTime(),
+      },
+    })
+  }
+
   const updateLabelProp = (key: string, value: any) => {
     onUpdateField({
       ...selectedField,
@@ -70,6 +91,19 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
       properties: {
         ...props,
         [key]: value,
+      },
+    })
+  }
+
+  const updateNestedProp = (parentKey: string, key: string, value: any) => {
+    onUpdateField({
+      ...selectedField,
+      properties: {
+        ...props,
+        [parentKey]: {
+          ...props[parentKey as keyof typeof props],
+          [key]: value,
+        },
       },
     })
   }
@@ -100,7 +134,6 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
               placeholder="Enter field label"
             />
           </div>
-
           {'placeholder' in props && (
             <div className="bg-pink-100 rounded-lg p-4 space-y-2">
               <Label className="text-sm font-semibold">Placeholder</Label>
@@ -113,13 +146,6 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
                 placeholder="Enter placeholder"
               />
             </div>
-          )}
-
-          {selectedField.fieldType === 'currency' && (
-            <CurrencySettings
-              field={selectedField}
-              update={updateCurrencyProp}
-            />
           )}
 
           <div className="bg-pink-100 rounded-lg p-4 space-y-2">
@@ -137,6 +163,81 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
               <span className="text-sm font-medium">Required Field</span>
             </label>
           </div>
+
+          {selectedField.fieldType === 'currency' && (
+            <CurrencySettings
+              field={selectedField}
+              update={updateCurrencyProp}
+            />
+          )}
+          {selectedField.fieldType === 'date' && (
+            <DateSettings field={selectedField} updateDate={updateDateProp} />
+          )}
+          {selectedField.fieldType === 'list' && (
+            <ListSettings field={selectedField} update={updateProp} />
+          )}
+          {selectedField.fieldType === 'fixed_time' && (
+            <FixedTimeSettings field={selectedField} update={updateProp} />
+          )}
+          {selectedField.fieldType === 'time_range' &&  (
+            <div className="bg-pink-50 p-4 rounded-lg space-y-2 text-sm">
+              <Label>Time Format</Label>
+
+              <Select
+                value={props.timeFormat}
+                onValueChange={(val) => updateProp('timeFormat', val)}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="12">12-hour format (AM/PM)</SelectItem>
+                  <SelectItem value="24">24-hour format</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          {'maskFieldValue' in props && (
+            <div className="bg-pink-100 rounded-lg p-4 space-y-2">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={props.maskFieldValue}
+                  onChange={(e) =>
+                    updateProp('maskFieldValue', e.target.checked)
+                  }
+                />
+                <span className="text-sm font-medium">Mask Field Value</span>
+              </label>
+            </div>
+          )}
+          {'splitMode' in props && (
+            <div className="bg-pink-100 rounded-lg p-4 space-y-2">
+              <label className="flex items-center gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={props.splitMode}
+                  onChange={(e) => updateProp('splitMode', e.target.checked)}
+                />
+                <span className="text-sm font-medium">Enable Split Mode</span>
+              </label>
+              {props.splitMode && (
+                <div className="space-y-3">
+                  <div>
+                    <Label className="text-xs">Box Count</Label>
+                    <input
+                      type="number"
+                      value={props.splitBoxes.count}
+                      onChange={(e) =>
+                        updateNestedProp('splitBoxes', 'count', +e.target.value)
+                      }
+                      className="border px-2 py-1 text-xs rounded"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="formatting" className="mt-4 space-y-4">
@@ -239,32 +340,6 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <Label className="text-xs">Alignment</Label>
-
-              <div className="flex gap-2">
-                <button
-                  onClick={() => updateLabelProp('textAlign', 'left')}
-                  className={`border rounded-md p-2 ${labelProps.textAlign === 'left' ? 'bg-pink-300' : ''}`}
-                >
-                  L
-                </button>
-                <button
-                  onClick={() => updateLabelProp('textAlign', 'center')}
-                  className={`border rounded-md p-2 ${labelProps.textAlign === 'center' ? 'bg-pink-300' : ''}`}
-                >
-                  C
-                </button>
-
-                <button
-                  onClick={() => updateLabelProp('textAlign', 'right')}
-                  className={`border rounded-md p-2 ${labelProps.textAlign === 'right' ? 'bg-pink-300' : ''}`}
-                >
-                  R
-                </button>
-              </div>
             </div>
           </div>
         </TabsContent>

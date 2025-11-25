@@ -11,7 +11,8 @@ const DateField = ({ field } : { field:Field}) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
 
-  const [value, setValue] = useState(props.displayValue || props.value || "");
+  const value = props.displayValue || props.value || "";
+
 
   return (
     <div className="flex flex-col gap-1 w-full">
@@ -57,7 +58,7 @@ const DateField = ({ field } : { field:Field}) => {
           required={props.required}
           placeholder={props.placeholder}
           value={value}
-          className="bg-muted/30 cursor-not-allowed"
+          className="bg-muted/30 "
         />
       )}
     </div>

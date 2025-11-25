@@ -9,7 +9,6 @@ import CheckboxField from "../fields/CheckboxField";
 import CompanyNameField from "../fields/CompanyNameField";
 import CurrencyField from "../fields/CurrencyField";
 import DateField from "../fields/DateField";
-import DateRangeField from "../fields/DateRangeField";
 import DateTimeRangeField from "../fields/DateTimeRangeField";
 import DropdownField from "../fields/DropdownField";
 import EmailField from "../fields/EmailField";
@@ -80,7 +79,6 @@ const map: Record<string, React.FC<{ field: Field }>> = {
   company_name: CompanyNameField,
   currency: CurrencyField,
   date: DateField,
-  date_range: DateRangeField,
   date_time_range: DateTimeRangeField,
   dropdown: DropdownField,
   email: EmailField,

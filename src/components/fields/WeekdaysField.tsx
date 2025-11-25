@@ -1,34 +1,46 @@
-import  { useState } from "react";
-import { Toggle } from "@/components/ui/toggle";
+import { useState } from "react";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Command, CommandInput, CommandGroup, CommandItem } from "@/components/ui/command";
+import { ChevronsUpDown, Check } from "lucide-react";
 import { Label } from "../ui/label";
 
-
-interface Field{
+interface Field {
   fieldId: string;
   fieldType: string;
   properties: any;
 }
-const WeekdaysField = ({ field }: {field:Field}) => {
+
+const WeekdaysField = ({ field, update }: { field: Field; update: any }) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
+
+  const WEEKDAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
   const initial = props.value
     ? props.value.split(",").map((v: string) => v.trim())
     : [];
 
-  const [selectedDays, setSelectedDays] = useState(initial);
-
-  const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const [selected, setSelected] = useState<string[]>(initial);
+  const [open, setOpen] = useState(false);
 
   const toggleDay = (day: string) => {
-    setSelectedDays((prev : any) =>
-      prev.includes(day) ? prev.filter((d :any) => d !== day) : [...prev, day]
-    );
+    let updated = [...selected];
+
+    if (updated.includes(day)) {
+      updated = updated.filter((d) => d !== day);
+    } else {
+      updated.push(day);
+    }
+
+    setSelected(updated);
+    update("value", updated.join(",")); // update JSON
   };
 
   return (
     <div className="flex flex-col gap-1 w-full">
 
+      {/* Label */}
       {labelProps?.showFieldLabel && (
         <Label
           className="text-sm font-medium"
@@ -44,28 +56,48 @@ const WeekdaysField = ({ field }: {field:Field}) => {
         </Label>
       )}
 
-      <div className="flex flex-wrap gap-2">
-        {WEEKDAYS.map((day) => {
-          const isActive = selectedDays.includes(day);
+      {/* Dropdown */}
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className="w-full justify-between"
+          >
+            {selected.length > 0
+              ? selected.join(", ")
+              : props.placeholder || "Select Weekday"}
+            <ChevronsUpDown className="h-4 w-4 opacity-50" />
+          </Button>
+        </PopoverTrigger>
 
-          return (
-            <Toggle
-              key={day}
-              pressed={isActive}
-              onPressedChange={() => toggleDay(day)}
-              className="px-3 py-1 text-sm"
-            >
-              {day}
-            </Toggle>
-          );
-        })}
-      </div>
+        <PopoverContent className="w-[250px] p-0">
+          <Command>
+            <CommandInput placeholder="Search weekday..." />
 
-      {selectedDays.length === 0 && (
-        <span className="text-xs text-gray-500 mt-1">
-          {props.placeholder || "Select Weekday"}
-        </span>
-      )}
+            <CommandGroup>
+              {WEEKDAYS.map((day) => {
+                const isSelected = selected.includes(day);
+
+                return (
+                  <CommandItem
+                    key={day}
+                    value={day}
+                    onSelect={() => toggleDay(day)}
+                    className="cursor-pointer"
+                  >
+                    <Check
+                      className={`mr-2 h-4 w-4 ${
+                        isSelected ? "opacity-100" : "opacity-0"
+                      }`}
+                    />
+                    {day}
+                  </CommandItem>
+                );
+              })}
+            </CommandGroup>
+          </Command>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };
