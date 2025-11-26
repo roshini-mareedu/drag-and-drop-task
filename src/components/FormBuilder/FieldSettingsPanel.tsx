@@ -137,7 +137,7 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
               placeholder="Enter field label"
             />
           </div>
-      
+
           {'placeholder' in props && (
             <div className="bg-pink-100 rounded-lg p-4 space-y-2">
               <Label className="text-sm font-semibold">Placeholder</Label>
@@ -213,6 +213,7 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
               </label>
             </div>
           )}
+
           {'splitMode' in props && (
             <div className="bg-pink-100 rounded-lg p-4 space-y-2">
               <label className="flex items-center gap-3 cursor-pointer">
@@ -223,6 +224,7 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
                 />
                 <span className="text-sm font-medium">Enable Split Mode</span>
               </label>
+
               {props.splitMode && (
                 <div className="space-y-3">
                   <div>
@@ -236,124 +238,165 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
                       className="border px-2 py-1 text-xs rounded"
                     />
                   </div>
+                  <div>
+                    <Label className="text-xs">Box Width</Label>
+                    <input
+                      type="number"
+                      value={props.splitBoxes.width}
+                      onChange={(e) =>
+                        updateNestedProp('splitBoxes', 'width', +e.target.value)
+                      }
+                      className="border px-2 py-1 text-xs rounded"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-xs">Box Spacing</Label>
+                    <input
+                      type="number"
+                      value={props.splitBoxes.spacing}
+                      onChange={(e) =>
+                        updateNestedProp(
+                          'splitBoxes',
+                          'spacing',
+                          +e.target.value,
+                        )
+                      }
+                      className="border px-2 py-1 text-xs rounded"
+                    />
+                  </div>
+                  <div>
+                    <Label className="text-xs">Box Height</Label>
+                    <input
+                      type="number"
+                      value={props.splitBoxes.height}
+                      onChange={(e) =>
+                        updateNestedProp(
+                          'splitBoxes',
+                          'height',
+                          +e.target.value,
+                        )
+                      }
+                      className="border px-2 py-1 text-xs rounded"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          {selectedField.fieldType === 'checkbox' && (
+            <div className="bg-pink-100 rounded-lg p-4 space-y-4">
+              <label className="flex gap-2 items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={props.useCrossmark}
+                  onChange={(e) => updateProp('useCrossmark', e.target.checked)}
+                  className="accent-pink-500 h-4 w-4"
+                />
+                <span className="text-sm font-medium">
+                  Use Crossmark Instead of Checkmark
+                </span>
+              </label>
+
+              <label className="flex gap-2 items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={props.checkboxGroup.enabled}
+                  onChange={(e) =>
+                    updateNestedProp(
+                      'checkboxGroup',
+                      'enabled',
+                      e.target.checked,
+                    )
+                  }
+                  className="accent-pink-500 h-4 w-4"
+                />
+                <span className="text-sm font-medium">
+                  Enable Checkbox Group
+                </span>
+              </label>
+
+              {props.checkboxGroup.enabled && (
+                <div className="space-y-3">
+                  <div>
+                    <Label className="text-xs">New Group Name:</Label>
+                    <input
+                      value={props.checkboxGroup.groupName}
+                      onChange={(e) =>
+                        updateNestedProp(
+                          'checkboxGroup',
+                          'groupName',
+                          e.target.value,
+                        )
+                      }
+                      placeholder="Enter group name"
+                      className="border rounded px-2 py-1 w-full text-sm"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <Label className="text-xs">Min Selections:</Label>
+                      <input
+                        type="number"
+                        value={props.checkboxGroup.minSelections}
+                        onChange={(e) =>
+                          updateNestedProp(
+                            'checkboxGroup',
+                            'minSelections',
+                            +e.target.value,
+                          )
+                        }
+                        className="border rounded px-2 py-1 w-full text-sm"
+                      />
+                    </div>
+
+                    <div>
+                      <Label className="text-xs">Max Selections:</Label>
+                      <input
+                        type="number"
+                        value={props.checkboxGroup.maxSelections}
+                        onChange={(e) =>
+                          updateNestedProp(
+                            'checkboxGroup',
+                            'maxSelections',
+                            +e.target.value,
+                          )
+                        }
+                        className="border rounded px-2 py-1 w-full text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  <label className="flex gap-2 items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={props.checkboxGroup.required}
+                      onChange={(e) =>
+                        updateNestedProp(
+                          'checkboxGroup',
+                          'required',
+                          e.target.checked,
+                        )
+                      }
+                      className="accent-pink-500 h-4 w-4"
+                    />
+                    <span className="text-sm font-medium">
+                      Make this group required
+                    </span>
+                  </label>
                 </div>
               )}
             </div>
           )}
         </TabsContent>
 
-        {/* <TabsContent value="formatting" className="mt-4 space-y-4">
-          <div className="border rounded-xl p-4 space-y-4 bg-pink-50">
-            <h3 className="text-xs font-semibold uppercase text-gray-500">
-              Field Label Styling
-            </h3>
-            <div className="flex flex-col gap-1">
-              <Label className="text-xs">Color</Label>
-
-              <Popover>
-                <PopoverTrigger className="w-full h-8 border rounded-md p-1 flex items-center justify-between text-xs">
-                  {labelProps.color}
-                  <div
-                    className="w-5 h-5 rounded-md border"
-                    style={{ background: labelProps.color }}
-                  />
-                </PopoverTrigger>
-
-                <PopoverContent className="w-64 p-0">
-                  <Command>
-                    <CommandInput placeholder="Search color..." />
-                    <CommandGroup>
-                      {[
-                        '#000000',
-                        '#333333',
-                        '#555555',
-                        '#888888',
-                        '#ffffff',
-                        '#e91e63',
-                        '#ff9800',
-                        '#4caf50',
-                        '#2196f3',
-                        '#9c27b0',
-                      ].map((clr) => (
-                        <CommandItem
-                          key={clr}
-                          value={clr}
-                          onSelect={() => updateLabelProp('color', clr)}
-                        >
-                          <div
-                            className="w-4 h-4 rounded-full border mr-2"
-                            style={{ background: clr }}
-                          />
-                          {clr}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <Label className="text-xs">Font Size</Label>
-
-              <Select
-                value={labelProps.fontsize}
-                onValueChange={(val) => updateLabelProp('fontsize', val)}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-
-                <SelectContent>
-                  {[10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28].map(
-                    (size) => (
-                      <SelectItem key={size} value={`${size}px`}>
-                        {size}px
-                      </SelectItem>
-                    ),
-                  )}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="flex flex-col gap-1">
-              <Label className="text-xs">Font Family</Label>
-
-              <Select
-                value={labelProps.fontFamily}
-                onValueChange={(val) => updateLabelProp('fontFamily', val)}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {[
-                    'Arial',
-                    'Inter',
-                    'Roboto',
-                    'Poppins',
-                    'Montserrat',
-                    'Georgia',
-                    'Times New Roman',
-                  ].map((font) => (
-                    <SelectItem value={font} key={font}>
-                      {font}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </TabsContent> */}
         <TabsContent value="formatting" className="mt-4 space-y-4">
           <div className="bg-pink-100 rounded-lg p-4 space-y-4">
             <h3 className="font-semibold text-base text-black">
               Field Label Styling
             </h3>
 
-            {/* top row - COLOR + FONT SIZE */}
             <div className="grid grid-cols-2 gap-4">
-              {/* COLOR */}
               <div className="flex flex-col gap-1">
                 <Label className="text-sm">Color</Label>
 
@@ -400,8 +443,6 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
                   </PopoverContent>
                 </Popover>
               </div>
-
-              {/* FONT SIZE */}
               <div className="flex flex-col gap-1">
                 <Label className="text-sm">Font Size</Label>
 
@@ -423,13 +464,9 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
                 </Select>
               </div>
             </div>
-
-            {/* second row FONT FAMILY + LABEL ALIGN*/}
             <div className="grid grid-cols-2 gap-4">
-              {/* font family */}
               <div className="flex flex-col gap-1">
                 <Label className="text-sm">Font Family</Label>
-
                 <Select
                   value={labelProps.fontFamily}
                   onValueChange={(val) => updateLabelProp('fontFamily', val)}
