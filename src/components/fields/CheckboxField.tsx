@@ -1,12 +1,9 @@
 import { useState } from "react";
-import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+import { Check, X } from "lucide-react";   // <-- ADD THIS
+import { Field } from "../FormBuilder/FieldRenderer";
 
-interface Field {
-  fieldId: string;
-  fieldType: string;
-  properties: any;
-}
 const CheckboxField = ({ field }: { field: Field }) => {
   const props = field.properties;
   const labelProps = props.fieldLabelProperties;
@@ -21,37 +18,41 @@ const CheckboxField = ({ field }: { field: Field }) => {
 
       {labelProps?.showFieldLabel && (
         <Label
-          className="text-sm font-medium"
           style={{
             color: labelProps.color,
             fontSize: labelProps.fontsize,
             fontFamily: labelProps.fontFamily,
-            textAlign:
-              (labelProps.textAlign as "left" | "center" | "right") || "left"
+            textAlign: labelProps.textAlign || "left",
           }}
         >
           {labelProps.fieldLabel}
-          {props.required && <span className="text-red-500 ml-1">*</span>}
+          {props.required && <span className="text-red-500">*</span>}
         </Label>
       )}
 
-      {/* >>> FIXED ROW <<< */}
       <div className="flex items-center gap-2">
 
-        <Checkbox
+        {/* CUSTOM CHECKBOX */}
+        <CheckboxPrimitive.Root
           checked={checked}
-          onCheckedChange={(val: any) => setChecked(Boolean(val))}
-          required={props.required}
-        />
+          onCheckedChange={(val) => setChecked(Boolean(val))}
+          className="h-5 w-5 rounded border border-gray-400 flex items-center justify-center bg-white"
+        >
+          <CheckboxPrimitive.Indicator>
+            {checked && (
+              props.useCrossmark ? (
+                <X size={16} className="text-red-600" />       // RED CROSS
+              ) : (
+                <Check size={16} className="text-black" />     // BLACK TICK
+              )
+            )}
+          </CheckboxPrimitive.Indicator>
+        </CheckboxPrimitive.Root>
 
         <span className="text-sm">{props.label}</span>
-
-        {props.useCrossmark && checked && (
-          <span className="text-xl text-red-500 leading-none">✕</span>
-        )}
       </div>
 
-      {/* GROUP LABEL INFO */}
+      {/* GROUP INFO */}
       {props.checkboxGroup?.enabled && (
         <small className="text-xs text-gray-500">
           Group: {props.checkboxGroup.groupName}

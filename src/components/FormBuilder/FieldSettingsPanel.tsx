@@ -285,7 +285,7 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
           )}
           {selectedField.fieldType === 'checkbox' && (
             <div className="bg-pink-100 rounded-lg p-4 space-y-4">
-              <label className="flex gap-2 items-center cursor-pointer">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={props.useCrossmark}
@@ -296,8 +296,7 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
                   Use Crossmark Instead of Checkmark
                 </span>
               </label>
-
-              <label className="flex gap-2 items-center cursor-pointer">
+              <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={props.checkboxGroup.enabled}
@@ -318,7 +317,7 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
               {props.checkboxGroup.enabled && (
                 <div className="space-y-3">
                   <div>
-                    <Label className="text-xs">New Group Name:</Label>
+                    <Label className="text-xs">Group Name</Label>
                     <input
                       value={props.checkboxGroup.groupName}
                       onChange={(e) =>
@@ -328,14 +327,13 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
                           e.target.value,
                         )
                       }
-                      placeholder="Enter group name"
                       className="border rounded px-2 py-1 w-full text-sm"
+                      placeholder="Enter group name"
                     />
                   </div>
-
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <Label className="text-xs">Min Selections:</Label>
+                      <Label className="text-xs">Min Selections</Label>
                       <input
                         type="number"
                         value={props.checkboxGroup.minSelections}
@@ -343,7 +341,7 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
                           updateNestedProp(
                             'checkboxGroup',
                             'minSelections',
-                            +e.target.value,
+                            Number(e.target.value),
                           )
                         }
                         className="border rounded px-2 py-1 w-full text-sm"
@@ -351,7 +349,7 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
                     </div>
 
                     <div>
-                      <Label className="text-xs">Max Selections:</Label>
+                      <Label className="text-xs">Max Selections</Label>
                       <input
                         type="number"
                         value={props.checkboxGroup.maxSelections}
@@ -359,15 +357,14 @@ const FieldSettingsPanel: React.FC<FieldSettingsPanelProps> = ({
                           updateNestedProp(
                             'checkboxGroup',
                             'maxSelections',
-                            +e.target.value,
+                            Number(e.target.value),
                           )
                         }
                         className="border rounded px-2 py-1 w-full text-sm"
                       />
                     </div>
                   </div>
-
-                  <label className="flex gap-2 items-center cursor-pointer">
+                  <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={props.checkboxGroup.required}

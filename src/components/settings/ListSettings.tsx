@@ -45,7 +45,7 @@ export default function ListSettings({ field, update } : any) {
         <span>Value</span>
       </div>
 
-      {items.map((item, index)=>(
+      {items.map((item : any, index : any)=>(
         <div key={index} className="space-y-2">
 
           <div className="grid grid-cols-2 gap-2 items-center relative">
@@ -70,7 +70,7 @@ export default function ListSettings({ field, update } : any) {
 
             <button
               onClick={()=>{
-                update("items", items.filter((_,i)=>i!==index));
+                update("items", items.filter((_ : any,i : any)=>i!==index));
               }}
               className="absolute right-[-14px] text-red-500"
             >
